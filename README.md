@@ -21,19 +21,14 @@ export AWS_PROFILE=tp-exam
 aws sts get-caller-identity --profile tp-exam
 ```
 
-### 2. Start Terraform:
+### 2. Create ECR:
 ```bash
-terraform init
+terraform -chdir=environments/dev/us-east-2 init
+terraform -chdir=environments/dev/us-east-2 plan -target=module.ecr.aws_ecr_repository.ecr_repository -var-file="dev.tfvars"
+terraform -chdir=environments/dev/us-east-2 apply -target=module.ecr.aws_ecr_repository.ecr_repository -var-file="dev.tfvars" --auto-approve
 ```
 
-### 3. Create ECR:
-```bash
-cd environments/dev/us-east-2
-terraform plan -target=aws_ecr_repository.ecr_repository -var-file="dev.tfvars"
-terraform apply -target=aws_ecr_repository.ecr_repository -var-file="dev.tfvars"
-```
-
-### 4. Login & push the image to ECR:
+### 3. Login & push the image to ECR:
 ```bash
 export AWS_ACCOUNT_ID=***********
 aws ecr get-login-password --region eu-west-2 --profile tp-exam | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-2.amazonaws.com
@@ -42,9 +37,10 @@ docker tag flask-hello:1.0.0 ${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-2.amazonaws.com/t
 docker push ${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-2.amazonaws.com/tp-flask-app:1.0.0
 ```
 
-### 5. Apply all other resources:
+### 4. Apply all other resources:
 ```bash
-terraform apply -var-file="dev.tfvars"
+terraform -chdir=environments/dev/us-east-2 plan -var-file="dev.tfvars"
+terraform -chdir=environments/dev/us-east-2 apply -var-file="dev.tfvars" --auto-approve
 ```
 
 #### Working with the repository:
