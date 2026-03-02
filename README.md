@@ -45,14 +45,16 @@ terraform -chdir=environments/dev/us-east-2 apply -var-file="dev.tfvars" --auto-
 
 #### Working with the repository:
 ```bash
-terraform init
-terraform plan -var-file="dev.tfvars"
-terraform apply -var-file="dev.tfvars"
-terraform destroy -var-file="dev.tfvars"
+
+terraform -chdir=environments/dev/us-east-2 init
+terraform -chdir=environments/dev/us-east-2 plan -var-file="dev.tfvars"
+terraform -chdir=environments/dev/us-east-2 apply -var-file="dev.tfvars"
+terraform -chdir=environments/dev/us-east-2 destroy -var-file="dev.tfvars"
 ```
 
 #### Useful command:
 ```bash
+terraform fmt -recursive
 terraform fmt
 terraform validate
 terraform show

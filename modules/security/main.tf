@@ -42,7 +42,7 @@ resource "aws_security_group" "ecs_tasks" {
 # Security Group for Interface Endpoints
 resource "aws_security_group" "vpc_endpoints" {
 
-  depends_on = [ aws_security_group.ecs_tasks ]
+  depends_on = [aws_security_group.ecs_tasks]
 
   name   = "${var.name_prefix}-vpc-endpoints-sg"
   vpc_id = var.vpc_id

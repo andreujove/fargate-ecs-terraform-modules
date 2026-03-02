@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "ecs_tg" {
   port        = 5000 # Flask app port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id # Matches your data source
-  target_type = "ip"                        # Required for Fargate
+  target_type = "ip"       # Required for Fargate
 
   health_check {
     enabled             = true
